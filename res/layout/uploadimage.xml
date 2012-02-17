@@ -14,29 +14,35 @@ android:layout_height="200px"
 
     <ImageView 
 	  android:src="@drawable/icon" 
-	android:id="@+id/bathroomPhoto"
-	 android:layout_alignParentTop="true" 
-	android:layout_centerInParent="true"
-	 android:layout_height="match_parent" 
-	android:layout_width="match_parent"
+	  android:id="@+id/bathroomPhoto"
+	  android:layout_alignParentTop="true" 
+      android:layout_centerInParent="true"
+	  android:layout_height="match_parent" 
+	  android:layout_width="match_parent"
     ></ImageView>
 
 </RelativeLayout>
-<LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout2" android:layout_height="wrap_content">
+<LinearLayout 
+     android:layout_width="match_parent" 
+     android:id="@+id/linearLayout2" 
+     android:layout_height="wrap_content">
+    
+    
     <Button 
-    android:layout_height="wrap_content"
-	
+     android:layout_height="wrap_content"	
      android:id="@+id/selectPhotoBtn" 
-     android:text="Upload!"
+     android:text="Select Photo"
      android:layout_alignParentLeft="true"
      android:layout_width="fill_parent"
-     android:layout_weight="1"
-></Button>
-    <Button android:layout_height="wrap_content" 
+     android:layout_weight="1">
+        
+</Button>
+<Button 
+     android:layout_height="wrap_content" 
      android:layout_width="fill_parent"
-            android:layout_weight="1"
-    android:id="@+id/button1" 
-    android:text="Select Photo"
+     android:layout_weight="1"
+     android:id="@+id/uploadBtn" 
+     android:text="Upload!"
      android:layout_alignParentRight="true"></Button>
 </LinearLayout>
 

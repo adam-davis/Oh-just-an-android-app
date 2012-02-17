@@ -1,5 +1,6 @@
 package wotw.app;
-//Taken from http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
+//Taken from 
+//http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
 import java.io.File;
 
 import android.app.Activity;
@@ -22,7 +23,8 @@ private static final int SELECT_PICTURE = 1;
 private String selectedImagePath;
 //ADDED
 private String filemanagerstring;
-
+private ImageUploader imageUploader;
+private String filePath;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,22 @@ private String filemanagerstring;
                         "Select Picture"), SELECT_PICTURE);
             }
         });
+        
+        ((Button) findViewById(R.id.uploadBtn)).setOnClickListener(new OnClickListener()
+        {
+        public void onClick(View arg0)
+        {
+        	if(filePath != "")
+        	{
+	        	imageUploader = new ImageUploader();
+	        	imageUploader.execute(new String[] {filePath});
+        	}
 
+        	
         }
+        	
+        });
+    }
     
     
     //UPDATED
@@ -62,12 +78,13 @@ private String filemanagerstring;
                 if(selectedImagePath!=null)
                 {
                     addImage(selectedImagePath);
+                    filePath =  selectedImagePath;
                 }
 
                 else if(filemanagerstring!=null)
                 {
-                    System.out.println(filemanagerstring);
                     addImage(filemanagerstring);
+                    filePath = filemanagerstring;
                 }
 
             }
