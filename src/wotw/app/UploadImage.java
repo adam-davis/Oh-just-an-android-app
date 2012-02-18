@@ -2,13 +2,28 @@ package wotw.app;
 //Taken from 
 //http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -30,7 +45,7 @@ private String filePath;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.uploadimage);
-
+        final Context myContext = this;
         ((Button) findViewById(R.id.selectPhotoBtn)).setOnClickListener(new OnClickListener()
        {
          public void onClick(View arg0) {
@@ -51,7 +66,7 @@ private String filePath;
         {
         	if(filePath != "")
         	{
-	        	imageUploader = new ImageUploader();
+	        	imageUploader = new ImageUploader(myContext);
 	        	imageUploader.execute(new String[] {filePath});
         	}
 
@@ -113,6 +128,66 @@ private String filePath;
             return cursor.getString(column_index);
         }
         else return null;
+    }
+    private class ImageUploader extends AsyncTask<String, Void, Boolean>{	
+    	
+    	private Context context;
+    	
+    	public ImageUploader(Context context)
+    	{
+    		this.context = context;
+    		
+    	}
+    	private final String url = "http://www.scope-resolution.org/android/image_process.php";
+    	
+    	@Override
+    	protected Boolean doInBackground(String... arg0) {
+    		Boolean success = uploadImage(arg0[0]);
+    		return success;
+    	}
+    	
+    	@Override
+    	 protected void onPostExecute(Boolean result) {
+    		Boolean derp = false;
+            if(result.equals(true))
+            	new AlertDialog.Builder(context).setTitle("First Run").setMessage("Tremendous sucess in your endeavor.").setNeutralButton("OK", null).show();
+            else
+            	new AlertDialog.Builder(context).setTitle("First Run").setMessage("Failure, oh noes!").setNeutralButton("OK", null).show();
+         }
+
+ 
+    	
+    	
+    	private Boolean uploadImage(String imagePath)
+    	{
+    	    HttpClient httpClient = new DefaultHttpClient();
+    	    HttpContext localContext = new BasicHttpContext();
+    	    HttpPost httpPost = new HttpPost(url);
+
+    	        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                // If the key equals to "image", we use FileBody to transfer the data
+                entity.addPart("image", new FileBody(new File (imagePath)));
+    	        httpPost.setEntity(entity);
+
+    	        try {
+    				HttpResponse response = httpClient.execute(httpPost, localContext);
+    			} catch (ClientProtocolException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				return false;
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				return false;
+    			}
+
+
+    	       return true;
+    		
+    		
+    	}
+
     }
 
     }
