@@ -1,6 +1,9 @@
 package wotw.app;
-//Taken from 
-//http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
+/*Based on code seen @ the following urls: 
+http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
+http://stackoverflow.com/questions/2935946/sending-images-using-http-post
+*/
+
 import java.io.File;
 import java.io.IOException;
 
@@ -77,7 +80,7 @@ private String filePath;
     }
     
     
-    //UPDATED
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
@@ -89,7 +92,6 @@ private String filePath;
                 //MEDIA GALLERY
                 selectedImagePath = getPath(selectedImageUri);
 
-                //DEBUG PURPOSE - you can delete this if you want
                 if(selectedImagePath!=null)
                 {
                     addImage(selectedImagePath);
