@@ -150,7 +150,6 @@ private String filePath;
     	
     	@Override
     	 protected void onPostExecute(Boolean result) {
-    		Boolean derp = false;
             if(result.equals(true))
             	new AlertDialog.Builder(context).setTitle("First Run").setMessage("Tremendous sucess in your endeavor.").setNeutralButton("OK", null).show();
             else
